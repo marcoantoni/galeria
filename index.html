@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Marco Antoni">
+    <title>Apresentações de Projeto de Software II - 2019</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+      p {
+        text-align: justify;
+      }
+      footer {
+        position: fixed;
+        height: 50px;
+        bottom: 0;
+        width: 100%;
+        background-color: #f5f5f5;
+      }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.3/examples/carousel/carousel.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Projeto de Software</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link disabled" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Detalhes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#exampleModal" data-toggle="modal" data-target="#exampleModal">Sobre</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main role="main">
+      <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <ol id="carousel-indicators" class="carousel-indicators">
+          <!--<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>-->
+        </ol>
+        <div id="carousel-inner" class="carousel-inner"></div>        
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Anterior</span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Próximo</span>
+        </a>
+      </div>
+    </main>
+    <!-- FOOTER -->
+    <footer class="fixed-bottom footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">Profª Andrea - Departamento de Linguagens e Sistemas de Computação</span>
+      </div>
+    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sobre a disciplina</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Disciplina ofertada pelo Departamento de Linguagens e Sistemas de Computação aos cursos de Sistemas de Informação e Ciência da Computação, ministrada em 2016b pelos professores Andrea Charão e João Carlos Lima. Esta página refere-se a projetos orientados pela Profª Andrea.</p>
+
+            <p>Cada projeto partiu da definição de um problema e gerou um produto (software) que foi desenvolvido em duplas ou invididualmente, usando tecnologias adequadas aos objetivos.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="js/jquery-3.4.1.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script>
+	 var urlJson = 'dados.json';
+		
+	 $.getJSON( urlJson)
+		.done(function( data ) {
+      // preenche o carousel com os dados do json
+			let len = data[0].trabalhos.length;
+			for (let i=0; i<len; i++){
+				var carousel = '<div class="carousel-item';
+				if (i === 0) carousel += '  active';
+				carousel += '">'; 
+          carousel += '<img class="first-slide" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="First slide">';
+          carousel += '<div class="container">';
+          carousel += '  <div class="carousel-caption text-left">';
+          carousel +=    '<h1>' + data[0].trabalhos[i].titulo + '</h1>';
+          carousel +=    '<p>'+data[0].trabalhos[i].descricao+'</p>';
+          carousel +=    '<p><a class="btn btn-lg btn-primary" onclick="javascript: detalhes('+i+')" role="button">Detalhes</a></p>';
+          carousel +=  '</div>';
+          carousel += '</div>';
+        	carousel += '</div>';
+
+		    let indicator = '<li data-target="#myCarousel" data-slide-to="'+i+'"';
+		    if (i === 0) indicator += ' class="active"';
+		    indicator += '></li>';
+
+		    if (i === len-1){
+		    	var controls  = '<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">';
+		        controls += '  <span class="carousel-control-prev-icon" aria-hidden="true"></span>';
+		        controls += '  <span class="sr-only">Previous</span>';
+		        controls += '</a>';
+		        controls += '<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">';
+		        controls += '  <span class="carousel-control-next-icon" aria-hidden="true"></span>';
+		        controls += '  <span class="sr-only">Next</span>';
+		        controls += '</a>';
+      	}
+		    $('#carousel-indicators').append(indicator);
+		    $('#carousel-inner').append(carousel);
+		    $('#myCarousel').append(myCarousel);
+			}
+		});
+
+    // grava um cookie com o id do trabalho e redireciona para a página detalhes
+		function detalhes(id){
+      document.cookie = 'id_trabalho=' + id;
+			window.location.href = 'detalhes.html';
+		}
+  </script>
+</html>

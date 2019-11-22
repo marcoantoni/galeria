@@ -1,0 +1,13 @@
+[
+  {
+    "trabalhos": [
+      { 
+        "titulo": "Galeria dinâmica",
+        "descricao": "Galeria para exibição de projetos dinâmica através da leitura dos dados de um arquivo JSON",
+        "linguagens": "HTML;CSS;JavaScript;Bootstrap;JQuey;galleria.js",
+        "autores": "Marco Antoni;Outro autor",
+        "imagens":["teste.png", "IMG_20120427_145213.jpg", "teste.png"]
+      }
+    ]
+  }
+]

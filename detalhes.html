@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Marco Antoni">
+    <title>Apresentações de Projeto de Software II - 2019b</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/galleria.classic.css">
+    <style>
+      p {
+        text-align: justify;
+      }
+      
+      .galleria{ width: 700px; height: 400px; background: #f5f5f5 }
+
+      footer {
+        position: fixed;
+        height: 50px;
+        bottom: 0;
+        width: 100%;
+        background-color: #f5f5f5;
+      }
+    </style>
+  </head>
+
+  <body class="d-flex flex-column h-100">
+    <header>
+      <!-- Navbar fixa -->
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="#">Projeto de Software</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item ">
+              <a class="nav-link" href="index.html">Home </span></a>
+            </li>
+            <li class="nav-item active disabled">
+              <a class="nav-link" href="#">Detalhes<span class="sr-only">(atual)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#exampleModal" data-toggle="modal" data-target="#exampleModal">Sobre</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Começa o conteúdo da página -->
+    <main role="main" class="flex-shrink-0">
+      <div class="container">
+        <!-- informacoes carregadas a partir do json -->
+        <div class="row">
+          <div class="col-12">
+            <br>
+            <h1 class="mt-5" id="nomeprojeto"></h1>
+            <p class="lead" id="descricaoprojeto"></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            <!-- as imagens dentro desse id serão exibidas na galeria -->
+            <div class="galleria" id="galleria"></div>
+          </div><!-- col-8-->
+          <div class="col-4"><h2>Detalhes do projeto</h2>
+            Linguagens/Tecnologias
+            <ul id="linguagens"></ul>
+            Autor
+            <ul id="autor"></ul>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="fixed-bottom footer mt-auto py-3">
+      <div class="container">
+        <span class="text-muted">Profª Andrea - Departamento de Linguagens e Sistemas de Computação</span>
+      </div>
+    </footer>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sobre a disciplina</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Disciplina ofertada pelo Departamento de Linguagens e Sistemas de Computação aos cursos de Sistemas de Informação e Ciência da Computação, ministrada em 2016b pelos professores Andrea Charão e João Carlos Lima. Esta página refere-se a projetos orientados pela Profª Andrea.</p>
+
+            <p>Cada projeto partiu da definição de um problema e gerou um produto (software) que foi desenvolvido em duplas ou invididualmente, usando tecnologias adequadas aos objetivos.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="js/jquery-3.4.1.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/galleria.min.js"></script>
+        
+  <script type="text/javascript">
+    // arquivo que contem o json com a origem dos dados
+    var urlJson = 'dados.json';
+    // imgPath refere-se a pasta em que as imagens estao gravadas
+    var imgPath = 'images/';
+    
+    $.getJSON(urlJson, {
+      cache: false
+    })
+    .done(function( data ) {
+
+      // captura o cookie e define o id do trabalho
+      var id_trabalho = 0;
+      var x = document.cookie;
+      var cookie = x.split('=');
+      id_trabalho = cookie[1];
+
+      // preenche as informacoes do projeto
+      $('#nomeprojeto').append(data[0].trabalhos[id_trabalho].titulo);
+      $('#descricaoprojeto').append(data[0].trabalhos[id_trabalho].descricao);
+
+      // preenche as linguagens utilizadas
+      var linguagens = data[0].trabalhos[id_trabalho].linguagens.split(';');
+      for (let i=0; i < linguagens.length; i++){
+        $('#linguagens').append('<li>'+linguagens[i]+'</li>');
+      }
+
+      // preenche os nomes dos autores
+      var autores = data[0].trabalhos[id_trabalho].autores.split(';');
+      for (let i=0; i < autores.length; i++){
+        $('#autor').append('<li>'+autores[i]+'</li>');
+      }              
+
+      // adiciona as imagens a galeria
+      var qtdImg =  data[0].trabalhos[id_trabalho].imagens.length;
+      for (let i=0; i < qtdImg; i++){
+        let imgName = imgPath + data[0].trabalhos[id_trabalho].imagens[i];
+        $('#galleria').append('<img src="'+imgName+'" data-title="My title" data-description="My description">');
+      }
+
+      // carrega a galeria depois de preencher as imagens
+      (function() {
+        Galleria.loadTheme('https://cdnjs.cloudflare.com/ajax/libs/galleria/1.5.7/themes/classic/galleria.classic.min.js');
+        Galleria.run('.galleria', {
+          imageCrop: true, 
+          transition: 'fade',
+          lightbox: true
+        });
+      }());
+    });
+  </script> 
+</html>
